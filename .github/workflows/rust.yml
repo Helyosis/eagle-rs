@@ -1,0 +1,28 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: ensure nightly toolchain
+      run: rustup toolchain install nightly; rustup default nightly
+    - name: install cargo-make
+      run: cargo install cargo-make
+    - name: build the driver
+      run: cd driver; cargo make build
+    - name: build the client
+      run: cd client; cargo make build     
