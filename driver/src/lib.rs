@@ -1,6 +1,4 @@
 #![no_std]
-#![feature(alloc_c_string)]
-#![feature(core_c_str)]
 
 
 mod string;
@@ -206,7 +204,7 @@ pub extern "system" fn dispatch_device_control(device_object: &mut DEVICE_OBJECT
                 return complete_request(irp, status, information);
             }
             
-            if unsafe { (*target).index < 0 || (*target).index > 64 } {
+            if unsafe { (*target).index > 64 } {
                 status = STATUS_INVALID_PARAMETER;
                 log::error!("STATUS_INVALID_PARAMETER");
                 return complete_request(irp, status, information);
